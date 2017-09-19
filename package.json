@@ -3,13 +3,27 @@
     "displayName": "Iodine",
     "description": "Iodine support for Visual Studio Code.",
     "version": "0.0.1",
-    "publisher": "SplittyDev",
+    "publisher": "splittydev",
     "engines": {
         "vscode": "^1.16.0"
     },
     "categories": [
         "Languages"
     ],
+    "author": {
+        "name": "Marco Quinten",
+        "email": "splittydev@gmail.com",
+        "url": "https://github.com/splittydev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/IodineLang/iodine-vscode.git"
+    },
+    "bugs": {
+        "url": "https://github.com/IodineLang/iodine-vscode/issues",
+        "email": "splittydev@gmail.com"
+    },
+    "homepage": "https://github.com/IodineLang/iodine-vscode",
     "contributes": {
         "languages": [{
             "id": "iodine",

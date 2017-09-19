@@ -1,5 +1,7 @@
 # Iodine for VS Code
 
+[![Get Iodine for VS Code!](https://vsmarketplacebadge.apphb.com/version-short/splittydev.iodine-vscode.svg)](https://marketplace.visualstudio.com/items?itemName=splittydev.iodine-vscode)
+
 Iodine language support for Visual Studio Code.
 
 ## Features
