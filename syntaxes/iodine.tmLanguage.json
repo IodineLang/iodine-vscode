@@ -1,0 +1,268 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Iodine",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#builtins"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#language-constructs"	
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#operators"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line",
+					"match": "#\\s*(?:(TODO|HACK):)*.*$",
+					"captures": {
+						"1": { "name": "meta.tag.comment-intention" }
+					}
+				},
+				{
+					"name": "comment.block",
+					"begin": "/\\*(?!\\*)",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.block.documentation",
+					"begin": "/\\*{2}",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"match": "^(?:\\s|\\*)*(@(?:kw)?param)\\s+(?:([a-zA-Z_*][a-zA-Z0-9_*]*))?(?:\\s?:\\s?([a-zA-Z_][a-zA-Z0-9_]*))?\\s+(.*)?$",
+							"captures": {
+								"1": { "name": "storage.modifier" },
+								"2": { "name": "meta.tag.argument-reference" },
+								"3": { "name": "support.type" }
+							}
+						},
+						{
+							"match": "^(?:\\s|\\*)*(@variadic)(?:\\s+([a-zA-Z_][a-zA-Z0-9_]*))?(?:\\s+(.*))?$",
+							"captures": {
+								"1": { "name": "storage.modifier" },
+								"2": { "name": "support.type" }
+							}
+						},
+						{
+							"match": "^(?:\\s|\\*)*(@module)\\s+(.*)$",
+							"captures": {
+								"1": { "name": "storage.modifier" },
+								"2": { "name": "meta.tag.module-name" }
+							}
+						},
+						{
+							"match": "^(?:\\s|\\*)*(@[a-z]+).*$",
+							"captures": {
+								"1": { "name": "storage.modifier" }
+							}
+						}
+					]
+				}
+			]
+		},
+		"builtins": {
+			"patterns": [
+				{
+					"name": "support.type.builtin",
+					"match": "\\b(B(igInt|ool|ytes)|Complex|Dict|Exception|Float|Int|List|Null|Str(ingBuffer)?|Tuple)\\b"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control",
+					"match": "\\b(as|break|c(ase|ontinue)|default|e(lse(?:\\s+if)?|xcept)|f(or|rom)|i(f|n)|is(not)?|match|r(aise|eturn)|try|use|w(hile|ith)|yield)\\b"
+				},
+				{
+					"name": "keyword.other",
+					"match": "\\b(c(lass|ontract)|func|global|lambda|mixin|params|s(elf|uper)|trait)\\b"
+				},
+				{
+					"name": "storage.modifier",
+					"match": "\\b(extends|implements)\\b"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.language",
+					"match": "\\b(false|null|true)\\b"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "\\b([+-]?\\d+((\\.\\d+)|L)?)\\b"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "\\b([+-]?0x(\\d|[a-fA-F])+L?)\\b"
+				}
+			]
+		},
+		"language-constructs": {
+			"patterns": [
+				{
+					"name": "keyword.other.import",
+					"match": "^\\s*(use)\\s+(.*(?:\\s*,\\s*.*)*)\\s+(from)\\s+(.*)",
+					"captures": {
+						"1": { "name": "keyword.other" },
+						"2": { "name": "support.type" },
+						"3": { "name": "keyword.other" },
+						"4": { "name": "support.type" }
+					}
+				},
+				{
+					"match": "(class)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+					"captures": {
+						"1": { "name": "keyword.other" },
+						"2": { "name": "entity.name.class" }
+					}
+				},
+				{
+					"comment": "Function call",
+					"match": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*(\\()",
+					"captures": {
+						"1": { "name": "entity.name.function" },
+						"2": { "name": "punctuation" }
+					}
+				},
+				{
+					"comment": "Function with arrow syntax",
+					"match": "(func)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(\\()(.*)(\\))(?:\\s*=>\\s*(.*))",
+					"captures": {
+						"1": { "name": "keyword.other" },
+						"2": { "name": "entity.name.function" },
+						"3": { "name": "punctuation" },
+						"4": {
+							"patterns": [
+								{
+									"include": "#argument-list"
+								}
+							]
+						},
+						"5": { "name": "punctuation" },
+						"6": {
+							"patterns": [
+								{
+									"include": "$self"
+								}
+							]
+						}
+					}
+				},
+				{
+					"comment": "Function",
+					"match": "(func)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(\\()(.*)(\\))(?:\\s*\\{)?",
+					"captures": {
+						"1": { "name": "keyword.other" },
+						"2": { "name": "entity.name.function" },
+						"3": { "name": "punctuation" },
+						"4": {
+							"patterns": [
+								{
+									"include": "#argument-list"
+								}
+							]
+						},
+						"5": { "name": "punctuation" }
+					}
+				}
+			],
+			"repository": {
+				"argument-list": {
+					"patterns": [
+						{
+							"match": "\\s*(?:[a-zA-Z_][a-zA-Z0-9_]*)(?:\\s*:\\s*([a-zA-Z_][a-zA-Z0-9_]*))\\s*,?",
+							"captures": {
+								"1": { "name": "support.type" }
+							}
+						}
+					]
+				}
+			}
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.interpolated",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"contentName": "source.embedded.iodine",
+							"begin": "#\\{",
+							"end": "\\}",
+							"patterns": [
+								{
+									"include": "$self"
+								}
+							]
+						},
+						{
+							"include": "#escape-character"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single",
+					"begin": "\\'",
+					"end": "\\'",
+					"patterns": [
+						{
+							"include": "#escape-character"
+						}
+					]
+				},
+				{
+					"name": "string.regexp",
+					"begin": "r\"",
+					"end": "\""
+				}
+			],
+			"repository": {
+				"escape-character": {
+					"patterns": [
+						{
+							"name": "constant.character.escape",
+							"match": "\\\\[bfnrt'\"\\\\]"
+						}
+					]
+				}
+			}
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "punctuation",
+					"match": "\\(|\\)|\\{|\\}|\\[|\\]|\\.|\\;"
+				},
+				{
+					"name": "keyword.operator.comparison",
+					"match": "(?:[<>!]=?)|(?:==)"
+				},
+				{
+					"name": "keyword.operator.assignment",
+					"match": "[+\\-*/&|^]?="
+				}
+			]
+		}
+	},
+	"scopeName": "source.iodine"
+}
