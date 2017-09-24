@@ -88,11 +88,11 @@
 			"patterns": [
 				{
 					"name": "keyword.control",
-					"match": "\\b(as|break|c(ase|ontinue)|default|e(lse(?:\\s+if)?|xcept)|f(or|rom)|i(f|n)|is(not)?|match|r(aise|eturn)|try|use|w(hile|ith)|yield)\\b"
+					"match": "\\b(as|break|c(ase|ontinue)|default|do|unless|until|e(lse(?:\\s+if)?|xcept)|f(or|rom)|i(f|n)|is(not)?|match|r(aise|eturn)|try|use|w(hile|ith)|yield)\\b"
 				},
 				{
 					"name": "keyword.other",
-					"match": "\\b(c(lass|ontract)|func|global|lambda|mixin|params|s(elf|uper)|trait)\\b"
+					"match": "\\b(c(lass|ontract)|let|enum|func|global|lambda|mixin|params|s(elf|uper)|trait)\\b"
 				},
 				{
 					"name": "storage.modifier",
